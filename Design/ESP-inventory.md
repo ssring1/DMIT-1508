@@ -18,14 +18,15 @@ ItemDescription, CurrentSalePrice,<b class='rg'>Date, SuppliersNumber, PONumber,
 **Inventory** <span class='md'><b class='pk'>ItemNumber</b>,
 ItemDescription, CurrentSalePrice, InstockCount</span>
 
-**OrderHistory** <span>
-    class='md'><b class='pk'><i class='fk'> ItemNumber</i>, PONumber</b>,Date, SuppliersNumber, Quantity, Cost</span>
-
+**OrderHistory** <span class='md'><b class='pk'><i class='fk'> ItemNumber</i>, PONumber</b>,Date, SuppliersNumber, Quantity, Cost</span>
+    
 
 ### 2NF
-
+**PurchaseOrder** <span class='md'><b class='pk'>PONumber</b>, Date, SuppliersNumber</span>
+   
 ### 3NF
 
+>No changes
 ### Final Tables
 
 ### ERD
