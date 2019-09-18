@@ -16,7 +16,7 @@ ItemDescription, CurrentSalePrice,<b class='rg'>Date, SuppliersNumber, PONumber,
 ### 1NF
 
 **Inventory** <span class='md'><b class='pk'>ItemNumber</b>,
-ItemDescription, CurrentSalePrice, InstockCount</span>
+ItemDescription, CurrentSalePrice, InstockCount, ReorderValue</span>
 
 **OrderHistory** <span class='md'><b class='pk'><i class='fk'> ItemNumber</i>, PONumber</b>,Date, SuppliersNumber, Quantity, Cost</span>
     
@@ -34,6 +34,27 @@ ItemDescription, CurrentSalePrice, InstockCount</span>
 ![VIEW_NAME ERD](./Logical-ERD.png)
 
 ----
+# PURCHASE ORDER FORM
+
+> *About*
+
+### 0NF
+**PurchaseOrder** <span class='md'><b class='pk'>PurchaseOrderNumber</b>, SupplierName, SupplierNumber, Address, City, Province, PostalCode, Phone, Date,</b>,
+ItemDescription, CurrentSalePrice,<b class='rg'>ItemNumber, SuppliersNumber, SupplierDescription, Quantity, Cost, Amount</b>, SubTotal, GST, Total</span>
+
+### 1NF
+
+### 2NF
+
+### 3NF
+
+
+
+-------
+
+
+
+
 
 ## Legend
 
