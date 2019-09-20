@@ -34,6 +34,9 @@ ItemDescription, CurrentSalePrice, InstockCount, ReorderValue</span>
 ![VIEW_NAME ERD](./Logical-ERD.png)
 
 ----
+
+# PART 3
+
 # PURCHASE ORDER FORM
 
 > *About*
