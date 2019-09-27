@@ -5,6 +5,12 @@
 
 [**SQL Server**](https://www.microsoft.com/en-ie/sql-server/sql-server-downloads)
        
+SQL Server Management Studio and SQL Server 2017 are two different things!
+
+
+
+
+
 
 The files in this repository branch are my in-class examples. Additionally, you can find online notes at the course's [Moodle site](https://moodle.nait.ca) and on the unofficial [website notes](https://dmit-1508.github.io). Also be sure to checkout out the [**Learning Outcomes**](https://dmit-1508.github.io/about/LOGs.html) that I use in class.
 
