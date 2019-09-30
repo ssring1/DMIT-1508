@@ -64,7 +64,7 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Date')
 --a "schema". Each database can have one or more schemas.
 --The dafalt schemas name is [dbo].
 --Schema names are applied to top-level objects, like tables names.
-CREATE TABLE Customers
+CREATE TABLE [dbo] . [Customers]
 (
     -- The body of a CREATE TABLE will identify a comma-separated list of
     -- Column Declarations and Table Constraints.
