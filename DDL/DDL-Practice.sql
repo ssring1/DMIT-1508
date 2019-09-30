@@ -34,21 +34,48 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Orders')
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Customers')
     DROP TABLE Customers
 
+    IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'DepositBatchNumber')
+    DROP TABLE DepositBatchNumber
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'BalanceOwing')
+    DROP TABLE BalanceOwing
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'PaymentNumber')
+    DROP TABLE PaymentNumber
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'PaymentID')
+    DROP TABLE PaymentID
+    IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'OrderNumber')
+    DROP TABLE OrderNumber
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'PaymentType')
+    DROP TABLE PaymentType
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'PaymentAmount')
+    DROP TABLE PaymentAmount
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Date')
+    DROP TABLE Date
+    IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'PaymentID')
+    DROP TABLE PaymentID
+
+
+
+
 -- To create a database table, we use the CREATE TABLE statement.
 -- Note that the order in which we create/drop tables is important
 -- because of how the tables are related via Foreign Keys.
+-- Note that square brackets around identifiers is a common standard in writing SQL.
+--Database in SQL group all their contents into something called 
+--a "schema". Each database can have one or more schemas.
+--The dafalt schemas name is [dbo].
+--Schema names are applied to top-level objects, like tables names.
 CREATE TABLE Customers
 (
     -- The body of a CREATE TABLE will identify a comma-separated list of
     -- Column Declarations and Table Constraints.
-    CustomerNumber  int                 NOT NULL, -- NOT NULL means the data is required
-    FirstName       varchar(50)         NOT NULL,
-    LastName        varchar(60)         NOT NULL,
-    [Address]       varchar(40)         NOT NULL,
-    City            varchar(35)         NOT NULL,
-    Province        char(2)             NOT NULL,
-    PostalCode      char(6)             NOT NULL,
-    PhoneNumber     char(13)                NULL  -- NULL means the data is optional
+    [CustomerNumber]        int                 NOT NULL, -- NOT NULL means the data is required
+    [FirstName]             varchar(50)         NOT NULL,
+    [LastName]              varchar(60)         NOT NULL,
+    [Address]               varchar(40)         NOT NULL,
+    [City]                  varchar(35)         NOT NULL,
+    [Province]              char(2)             NOT NULL,
+    [PostalCode]            char(6)             NOT NULL,
+    [PhoneNumber]           char(13)            NULL  -- NULL means the data is optional
 )
 
 CREATE TABLE Orders
@@ -80,3 +107,22 @@ CREATE TABLE OrderDetails
 )
 
     /* =================== Ptractice SQL Below ================== */
+CREATE TABLE Payments
+(
+    PaymentID          int               NOT NULL,
+    Date               dateTime          NULL,
+    PaymentAmount      money             NOT NULL,
+    PaymentType        varchar(7)        NOT NULL,
+   
+)
+
+CREATE TABLE PaymentLogDetails
+(
+    OrderNumber             int                 NOT NULL,
+    PaymentID               int                 NOT NULL,
+    PaymentNumber           smallint            NOT NULL,
+    BalanceOwing            money               NOT NULL,
+    DepositBatchNumber      int                 NOT NULL
+)
+
+
