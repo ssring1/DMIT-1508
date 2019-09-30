@@ -97,7 +97,10 @@ CREATE TABLE Orders
     CustomerNumber  int 
         -- Foreign Key constraints ensure that when a row of data is being
         -- inserted or updated, there is a row in the referenced table
-        -- that has the same value as its Primary Key  NOT NULL,
+        -- that has the same value as its Primary Key
+        CONSTRAINT FK_Orders_CustomerNumber_Customers_CustomerNumber
+            FOREIGN KEY REFERENCES
+            Customers(CustomerNumber)   NOT NULL,
     [Date]          datetime            NOT NULL,
     Subtotal        money               NOT NULL,
     GST             money               NOT NULL,
@@ -106,8 +109,10 @@ CREATE TABLE Orders
 
 CREATE TABLE InventoryItems
 (
-    ItemNumber          varchar(5)          NOT NULL,
-    ItemDescription     varchar(50)             NULL,
+    ItemNumber          varchar(5)
+        CONSTRAINT PK_InventoryItems_ItemNumber
+            PRIMARY KEY                     NOT NULL,
+    ItemDescription     varchar(50)         NULL,
     CurrentSalePrice    money               NOT NULL,
     InStockCount        int                 NOT NULL,
     ReorderLevel        int                 NOT NULL
@@ -115,14 +120,26 @@ CREATE TABLE InventoryItems
 
 CREATE TABLE OrderDetails
 (
-    OrderNumber     int                 NOT NULL,
-    ItemNumber      varchar(5)          NOT NULL,
-    Quantity        int                 NOT NULL,
-    SellingPrice    money               NOT NULL,
-    Amount          money               NOT NULL
+    OrderNumber     int 
+        CONSTRAINT FK_OrderDetails_OrderNumber_Orders_OrderNumber
+            FOREIGN KEY REFERENCES
+            Orders(OrderNumber)                 NOT NULL,
+    ItemNumber      varchar(5) 
+        CONSTRAINT FK_OrderDetails_ItemNumber_InventoryItems_ItemNumber
+            FOREIGN KEY REFERENCES
+            InventoryItems(ItemNumber)          NOT NULL,
+    Quantity        int                         NOT NULL,
+    SellingPrice    money                       NOT NULL,
+    Amount          money                       NOT NULL,
+    -- The following is a Table Constraint
+    -- A composite primary key MUST be done as a Table Constraint
+    -- because it involves two or more columns
+    CONSTRAINT PK_OrderDetails_OrderNumber_ItemNumber
+        PRIMARY KEY (OrderNumber, ItemNumber) -- Specify all the columns in the PK
 )
 
-    /* =================== Ptractice SQL Below ================== */
+
+    /* =================== Practice SQL Below ================== */
 CREATE TABLE Payments
 (
     PaymentID          int               NOT NULL,
