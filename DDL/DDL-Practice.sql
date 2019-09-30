@@ -64,11 +64,21 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Date')
 --a "schema". Each database can have one or more schemas.
 --The dafalt schemas name is [dbo].
 --Schema names are applied to top-level objects, like tables names.
-CREATE TABLE [dbo] . [Customers]
+CREATE TABLE [dbo].[Customers]
 (
     -- The body of a CREATE TABLE will identify a comma-separated list of
     -- Column Declarations and Table Constraints.
-    [CustomerNumber]        int                 NOT NULL, -- NOT NULL means the data is required
+    [CustomerNumber]        int 
+        -- The following is a PRIMARY KEY constraint that has a specific name
+        -- Primary Key constraints ensure a row of data being added to the table
+        -- will have to have a unique value for the Primary Key column(s)
+        CONSTRAINT PK_Customers_CustomerNumber
+            PRIMARY KEY
+        -- IDENTITY means the database will generate a unique whole-number
+        -- value for this column
+        IDENTITY(100, 1) -- The first number is the "seed",
+                         -- and the last number is the "increment"
+                                                NOT NULL, -- NOT NULL means the data is required
     [FirstName]             varchar(50)         NOT NULL,
     [LastName]              varchar(60)         NOT NULL,
     [Address]               varchar(40)         NOT NULL,
@@ -80,8 +90,14 @@ CREATE TABLE [dbo] . [Customers]
 
 CREATE TABLE Orders
 (
-    OrderNumber     int                 NOT NULL,
-    CustomerNumber  int                 NOT NULL,
+    OrderNumber     int
+        CONSTRAINT PK_Orders_OrderNumber
+            PRIMARY KEY
+        IDENTITY(200, 1)               NOT NULL,
+    CustomerNumber  int 
+        -- Foreign Key constraints ensure that when a row of data is being
+        -- inserted or updated, there is a row in the referenced table
+        -- that has the same value as its Primary Key  NOT NULL,
     [Date]          datetime            NOT NULL,
     Subtotal        money               NOT NULL,
     GST             money               NOT NULL,
