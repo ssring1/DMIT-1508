@@ -106,8 +106,15 @@ CREATE TABLE [dbo].[Customers]
                                Province = 'NS' )
                                                    
                                                 NOT NULL,
-    [PostalCode]            char(6)             NOT NULL,
-    [PhoneNumber]           char(13)            NULL  -- NULL means the data is optional
+    [PostalCode]            char(6)
+         CONSTRAINT CK_Csutomrs_PostalCode
+            CHECK (PostalCode LIKE '[A-Z][0-9][A-Z][0-9][A-Z][0-9]')                          
+                                                NOT NULL,
+    [PhoneNumber]           char(13)
+        CONSTRAINT CK_Customers_PhoneNumber
+            CHECK (PhoneNumber LIKE
+                    '([0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
+                                                NULL  -- NULL means the data is optional
 )
 
 CREATE TABLE Orders
