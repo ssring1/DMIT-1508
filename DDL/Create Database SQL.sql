@@ -5,5 +5,5 @@
 --GO
 
 --[control] +r - toggles messages/results window
-USE MyDatabase -- change the excution context for the script that follows
+USE MyDatabase -- change the execution context for the script that follows
 GO --run as a batch
