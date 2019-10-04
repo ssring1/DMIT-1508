@@ -25,6 +25,10 @@ GO  -- this statement helps to "separate" various DDL statements in our script
 -- because of how the tables are related via Foreign Keys.
 /* DROP TABLE statements (to "clean up" the database for re-creation)  */
 /*   You should drop tables in the REVERSE order in which you created them */
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'PaymentLogDetails')
+    DROP TABLE PaymentLogDetails
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Payments')
+    DROP TABLE Payments
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'OrderDetails')
     DROP TABLE OrderDetails
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'InventoryItems')
@@ -33,7 +37,6 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Orders')
     DROP TABLE Orders
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Customers')
     DROP TABLE Customers
-
     IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'DepositBatchNumber')
     DROP TABLE DepositBatchNumber
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'BalanceOwing')
@@ -83,7 +86,26 @@ CREATE TABLE [dbo].[Customers]
     [LastName]              varchar(60)         NOT NULL,
     [Address]               varchar(40)         NOT NULL,
     [City]                  varchar(35)         NOT NULL,
-    [Province]              char(2)             NOT NULL,
+    [Province]              char(2)             
+                    CONSTRAINT DF_Customers_Province
+                        Default ('AB')
+                        
+                    CONSTRAINT CK_Customers_Province
+                        CHECK (Province = 'AB' OR
+                               Province = 'BC' OR
+                               Province = 'SK' OR
+                               Province = 'MB' OR
+                               Province = 'QC' OR
+                               Province = 'ON' OR
+                               Province = 'NT' OR
+                               Province = 'NS' OR
+                               Province = 'NL' OR
+                               Province = 'YK' OR
+                               Province = 'NU' OR
+                               Province = 'PE' OR
+                               Province = 'NS' )
+                                                   
+                                                NOT NULL,
     [PostalCode]            char(6)             NOT NULL,
     [PhoneNumber]           char(13)            NULL  -- NULL means the data is optional
 )
@@ -102,12 +124,16 @@ CREATE TABLE Orders
             FOREIGN KEY REFERENCES
             Customers(CustomerNumber)   NOT NULL,
     [Date]          datetime            NOT NULL,
-    Subtotal        money               NOT NULL,
+    Subtotal        money               
 
-    CONSTRAINT CK_Orders_Subtotal
-        CHECK (Subtotal > 0)
-    GST             money               NOT NULL,
-    Total           money               NOT NULL
+         CONSTRAINT CK_Orders_Subtotal
+            CHECK (Subtotal > 0)        NOT NULL,
+    GST             money              
+         CONSTRAINT CK_Orders_GST
+            CHECK (GST >= 0)       NOT NULL,
+
+    
+    Total          As Subtotal + GST --This is now a Compute Column  
 )
 
 CREATE TABLE InventoryItems
@@ -116,7 +142,10 @@ CREATE TABLE InventoryItems
         CONSTRAINT PK_InventoryItems_ItemNumber
             PRIMARY KEY                     NOT NULL,
     ItemDescription     varchar(50)         NULL,
-    CurrentSalePrice    money               NOT NULL,
+    CurrentSalePrice    money               
+        CONSTRAINT CK_InventoryItems_CurrentSalePrice
+            CHECK (CurrentSalePrice > 0)    NOT NULL,
+
     InStockCount        int                 NOT NULL,
     ReorderLevel        int                 NOT NULL
 )
@@ -131,9 +160,16 @@ CREATE TABLE OrderDetails
         CONSTRAINT FK_OrderDetails_ItemNumber_InventoryItems_ItemNumber
             FOREIGN KEY REFERENCES
             InventoryItems(ItemNumber)          NOT NULL,
-    Quantity        int                         NOT NULL,
-    SellingPrice    money                       NOT NULL,
-    Amount          money                       NOT NULL,
+    Quantity        int 
+        CONSTRAINT DF_OrderDetails_Quantity
+            DEFAULT (1) 
+         CONSTRAINT CK_OrderDetails_Quantity 
+            CHECK (Quantity > 0)                      
+                                                NOT NULL,
+    SellingPrice    money                      
+         CONSTRAINT CK_OrderDetails_SellingPrice       
+            CHECK (SellingPrice >= 0)           NOT NULL,
+    Amount          AS Quantity  *SellingPrice ,
     -- The following is a Table Constraint
     -- A composite primary key MUST be done as a Table Constraint
     -- because it involves two or more columns
