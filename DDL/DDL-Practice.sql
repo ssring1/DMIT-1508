@@ -103,6 +103,9 @@ CREATE TABLE Orders
             Customers(CustomerNumber)   NOT NULL,
     [Date]          datetime            NOT NULL,
     Subtotal        money               NOT NULL,
+
+    CONSTRAINT CK_Orders_Subtotal
+        CHECK (Subtotal > 0)
     GST             money               NOT NULL,
     Total           money               NOT NULL
 )
