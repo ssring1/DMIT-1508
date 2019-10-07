@@ -255,8 +255,8 @@ ALTER TABLE Customers
         --Negative match for 'F'
         --Negative match for '2udor'
 ALTER TABLE Customers
-    ADD CONSTRIANT CK_Customers_LastName
-        CHECK (LastName LIKE '[A-Z][A-Z]')
+    ADD CONSTRIANT CK_Customer_LastName
+        CHECK (LastName LIKE '[A-Z][A-Z]%')
 
 --Once the ALTER TABLE change are made for A) AND B),
 --We can insert Customer information allowing certain columns to be NULL.
