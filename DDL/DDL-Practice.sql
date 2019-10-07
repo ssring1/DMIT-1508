@@ -56,9 +56,6 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Date')
     IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'PaymentID')
     DROP TABLE PaymentID
 
-
-
-
 -- To create a database table, we use the CREATE TABLE statement.
 -- Note that the order in which we create/drop tables is important
 -- because of how the tables are related via Foreign Keys.
@@ -89,7 +86,6 @@ CREATE TABLE [dbo].[Customers]
     [Province]              char(2)             
                     CONSTRAINT DF_Customers_Province
                         Default ('AB')
-                        
                     CONSTRAINT CK_Customers_Province
                         CHECK (Province = 'AB' OR
                                Province = 'BC' OR
@@ -103,8 +99,7 @@ CREATE TABLE [dbo].[Customers]
                                Province = 'YK' OR
                                Province = 'NU' OR
                                Province = 'PE' OR
-                               Province = 'NS' )
-                                                   
+                               Province = 'NS' )        
                                                 NOT NULL,
     [PostalCode]            char(6)
          CONSTRAINT CK_Csutomrs_PostalCode
@@ -139,7 +134,6 @@ CREATE TABLE Orders
          CONSTRAINT CK_Orders_GST
             CHECK (GST >= 0)       NOT NULL,
 
-    
     Total          As Subtotal + GST --This is now a Compute Column  
 )
 
@@ -199,8 +193,122 @@ SELECT CustomerNumber, FirstName, LastName,
         [Address] + '' + City + ',' + Province AS 'Customer Address',
         PhoneNumber
 FROM    Customers
+
+--Let's insert a few rows of data for inventory items
+PRINT 'Inserting inventory items'
+INSERT INTO InventoryItems(ItemNumber, ItemDescription,CurrentSalePrice, InstockCount, ReorderLevel)
+    VALUES ('H8726', 'Cleaning Fan belt', 29.95, 3, 5),
+           ('H8621', 'Engine Fan belt', 17.45, 10, 5)
+
+
+--Let's do a 'quick' and 'dirty' select of Inventory Items
+SELECT *FROM InventoryItems
+--Notice how the data in the Invemtory is already sorted by the PK
+--This is because the PK of a data is (by default) a CLUSTERED INDEX
+
+--Let's do another set of DML statement to add more data to the database
+PRINT 'Inserting and order'
+INSERT INTO Orders(CustomerNumber, [Date], Subtotal, GST)
+    VALUES (100, GETDATE(), 17.45, 0.87)
+INSERT INTO OrderDetails(OrderNumber, ItemNumber, Quantity, SellingPrice)
+    VALUES (200, 'H8726', 1, 17.45)
+PRINT '--end of order data--'
+PRINT ''
+GO
+
+/* *****************
+*Change requests for spec 1
+*Perform table changes throught ALTER statements.
+*Syntax for ALTA Table can be found at 
+    http://msdn.microsolf.com/en-us/library/ms190273.aspx
+*Having to drop it or lose information in the table
+ ******************* */
+
+--A) Allow Address, City, Province , and Postal code to be NULL
+--     SQL required each column to be altered SEPARATELY.
+ALTER TABLE Customers
+    ALTER COLUMN [Address] VARCHAR(40) NULL
+GO-- this statement helps to 'separate' various DDL statement in our script. It's optional.
+
+ALTER TABLE Customers
+    ALTER COLUMN City varchar(35) NULL
+GO
+
+ALTER TABLE Customers
+    ALTER COLUMN City char(2)   NULL
+GO
+
+ALTER TABLE Customers
+    ALTER COLUMN PostalCode char(6) NULL
+GO
+
+
+--B) Add a check constraint on the first and Land name to require at the laest two letters.
+
+-- % is a wildcard for a single Character (letter , digit, or other character)
+--  [] are used to represent a range or set of characters that are allowed
+ALTER TABLE Customer
+    ADD CONSTRAINT CK_Customer_FirstName
+        CHECK (FirstName LIKE '[A-Z][A-Z]%')-- Two letters plus any other chars
+        --                      \1/\1/
+        --Positive match for 'Wu'
+        --Negative match for 'F'
+        --Negative match for '2udor'
+ALTER TABLE Customer
+    ADD CONSTRIANT CK_Customers_lastName
+        CHECK (LastName LIKE '[A-Z][A-Z]')
+
+--Once the ALTER TABLE change are made for A) AND B),
+--We can insert Customer information allowing certain columns to be NULL.
+INSERT INTO Customers(FirstName, LastName)
+    VALUES ('Fred', 'Flintsone')
+INSERT INTO Customers(FirstName, LastName)
+    VALUES ('Barney', 'Rubble')
+INSERT INTO Customers(FirstName, LastName, PhoneNumber)
+    VALUES ('Wilma', 'Slaghoodple', '(403) 555-1212')
+INSERT INTO Customers(FirstName, LastName, [Address], City)
+    VALUES ('Betty', 'Mcbricker', '103 Granite Road', 'Bedrock')
+
+--Select the customer information
+SELECT CustomerNumber, FirstName, LastName,
+    [Address] + '' + City + ', '+ Province AS 'Customer Address',
+      PhoneNumber
+FROM Customers
+GO
+
+
+/* You can check that the constraints work on the first/last name by highlihting these scripts.They should fail.
+
+INSERT INTO Customer(FirstName, LastName)
+    VALUES ('F','Flinstone')
+INSERT INTO Customer(FirstName, LastName)
+    values ('Fred', 'F')
+
+*/
+
+--C) Add an extra bit of information on the  Customer table. The client eant to 
+--  start tracking customer emails, so they can send out statement for outstanding payments that are due at the end of the month.
+ALTER TABLE Customer
+    ADD Email varchar(30) NULL
+    --Adding this as a nullable column because customers already 
+    --exist, and we don't have email for those customers.
+
+GO
+
+--D) Add indexes to the Customer's First and Last name columns
+
+--E) Add a default constraint on the Orders. Date column to use the current date.
+
+--F) Change the InventoryItems.ItemDescription column to the NOT NULL
+
+--G) Add an index on the Item's Description column , to improve search.
+
+--H) Data change requests: All inventory items that are less than $5.00 have to 
+--      Have their prices increased by 10%.
+
+
     /* =================== Practice SQL Below ================== */
-CREATE TABLE Payments
+/* CREATE TABLE Payments
 (
     PaymentID          int               NOT NULL,
     Date               dateTime          NULL,
@@ -219,3 +327,4 @@ CREATE TABLE PaymentLogDetails
 )
 
 
+*/
