@@ -235,7 +235,7 @@ ALTER TABLE Customers
 GO
 
 ALTER TABLE Customers
-    ALTER COLUMN City char(2)   NULL
+    ALTER COLUMN Province char (2) NULL
 GO
 
 ALTER TABLE Customers
@@ -247,15 +247,15 @@ GO
 
 -- % is a wildcard for a single Character (letter , digit, or other character)
 --  [] are used to represent a range or set of characters that are allowed
-ALTER TABLE Customer
+ALTER TABLE Customers
     ADD CONSTRAINT CK_Customer_FirstName
         CHECK (FirstName LIKE '[A-Z][A-Z]%')-- Two letters plus any other chars
         --                      \1/\1/
         --Positive match for 'Wu'
         --Negative match for 'F'
         --Negative match for '2udor'
-ALTER TABLE Customer
-    ADD CONSTRIANT CK_Customers_lastName
+ALTER TABLE Customers
+    ADD CONSTRIANT CK_Customers_LastName
         CHECK (LastName LIKE '[A-Z][A-Z]')
 
 --Once the ALTER TABLE change are made for A) AND B),
@@ -288,7 +288,7 @@ INSERT INTO Customer(FirstName, LastName)
 
 --C) Add an extra bit of information on the  Customer table. The client eant to 
 --  start tracking customer emails, so they can send out statement for outstanding payments that are due at the end of the month.
-ALTER TABLE Customer
+ALTER TABLE Customers
     ADD Email varchar(30) NULL
     --Adding this as a nullable column because customers already 
     --exist, and we don't have email for those customers.
@@ -296,8 +296,26 @@ ALTER TABLE Customer
 GO
 
 --D) Add indexes to the Customer's First and Last name columns
-
+CREATE NONCLUSTERED INDEX IX_Customers_FirstName
+    ON Customers (FirstName)
+CREATE NONCLUSTERED INDEX IX_Customers_LastName
+    ON Customers (LastName)
+GO --End of a batch of instructions
 --E) Add a default constraint on the Orders. Date column to use the current date.
+--GETDATE() is a global funsction in the SQL Server Database
+--GETDATE() will obtain the current date/time on the database  servser
+ALTER TABLE Orders
+    ADD CONSTRAINT DF_Order_Date
+        DEFAULT GETDATE() FOR [Date]
+-- Use \this / for \this column/ if no value was supplied when INSERTING data
+GO
+--To illustrate the default value, consider this sample row for the Orders table 
+INSERT INTO Orders (CustomerNumber, Subtotal, GST)
+    VALUES (101, 150.00, 7.50)
+--Selectt the current orders
+SELECT OrderNumber, CustomerNumber, Total, [Date]
+FROM Orders
+GO
 
 --F) Change the InventoryItems.ItemDescription column to the NOT NULL
 
