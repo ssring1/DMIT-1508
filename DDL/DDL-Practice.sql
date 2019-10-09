@@ -282,7 +282,7 @@ GO
 INSERT INTO Customer(FirstName, LastName)
     VALUES ('F','Flinstone')
 INSERT INTO Customer(FirstName, LastName)
-    values ('Fred', 'F')
+    VALUES ('Fred', 'F')
 
 */
 
