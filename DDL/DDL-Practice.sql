@@ -304,6 +304,7 @@ GO --End of a batch of instructions
 --E) Add a default constraint on the Orders. Date column to use the current date.
 --GETDATE() is a global function in the SQL Server Database
 --GETDATE() will obtain the current date/time on the database  servser
+
 ALTER TABLE Orders
     ADD CONSTRAINT DF_Order_Date
         DEFAULT GETDATE() FOR [Date]
