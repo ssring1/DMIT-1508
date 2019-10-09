@@ -62,7 +62,7 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Date')
 -- Note that square brackets around identifiers is a common standard in writing SQL.
 --Database in SQL group all their contents into something called 
 --a "schema". Each database can have one or more schemas.
---The dafalt schemas name is [dbo].
+--The default schemas name is [dbo].
 --Schema names are applied to top-level objects, like tables names.
 CREATE TABLE [dbo].[Customers]
 (
