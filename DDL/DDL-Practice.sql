@@ -102,7 +102,7 @@ CREATE TABLE [dbo].[Customers]
                                Province = 'NS' )        
                                                 NOT NULL,
     [PostalCode]            char(6)
-         CONSTRAINT CK_Csutomrs_PostalCode
+         CONSTRAINT CK_Customers_PostalCode
             CHECK (PostalCode LIKE '[A-Z][0-9][A-Z][0-9][A-Z][0-9]')                          
                                                 NOT NULL,
     [PhoneNumber]           char(13)
