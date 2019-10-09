@@ -248,14 +248,14 @@ GO
 -- % is a wildcard for a single Character (letter , digit, or other character)
 --  [] are used to represent a range or set of characters that are allowed
 ALTER TABLE Customers
-    ADD CONSTRAINT CK_Customer_FirstName
+    ADD CONSTRAINT CK_Customers_FirstName
         CHECK (FirstName LIKE '[A-Z][A-Z]%')-- Two letters plus any other chars
         --                      \1/\1/
         --Positive match for 'Wu'
         --Negative match for 'F'
         --Negative match for '2udor'
 ALTER TABLE Customers
-    ADD CONSTRIANT CK_Customer_LastName
+    ADD CONSTRIANT CK_Customers_LastName
         CHECK (LastName LIKE '[A-Z][A-Z]%')
 
 --Once the ALTER TABLE change are made for A) AND B),
