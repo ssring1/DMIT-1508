@@ -286,7 +286,7 @@ INSERT INTO Customer(FirstName, LastName)
 
 */
 
---C) Add an extra bit of information on the  Customer table. The client eant to 
+--C) Add an extra bit of information on the  Customer table. The client want to 
 --  start tracking customer emails, so they can send out statement for outstanding payments that are due at the end of the month.
 ALTER TABLE Customers
     ADD Email varchar(30) NULL
@@ -302,7 +302,7 @@ CREATE NONCLUSTERED INDEX IX_Customers_LastName
     ON Customers (LastName)
 GO --End of a batch of instructions
 --E) Add a default constraint on the Orders. Date column to use the current date.
---GETDATE() is a global funsction in the SQL Server Database
+--GETDATE() is a global function in the SQL Server Database
 --GETDATE() will obtain the current date/time on the database  servser
 ALTER TABLE Orders
     ADD CONSTRAINT DF_Order_Date
