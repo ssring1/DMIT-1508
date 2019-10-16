@@ -49,12 +49,12 @@ FROM    Student
 --      and sort the results by the last name
 SELECT    FirstName, LastName
 FROM      Student
-ORDER BY  LastName
+ORDER BY  LastName DESC
 -- 2.d. Select the first and last names of all the students,
 --      and sort the results by the last name, then by the first name
 SELECT    FirstName, LastName
 FROM      Student
-ORDER BY  LastName, FirstName
+ORDER BY  LastName DESC, FirstName ASC
 
 --3. Select the CourseId and CourseName of all the courses. Use the column aliases of Course ID and Course Name
 SELECT  CourseId AS 'Course ID', CourseName AS 'Course Name'
@@ -77,6 +77,11 @@ WHERE  PositionID = 3
         -- BTW, what is PositionID of 3 referring to?
 SELECT  PositionID, PositionDescription
 FROM    Position
+
+--Interlude...
+SELECT  S.FirstName, S.lastName
+FROM    Student AS S
+WHERE   S.BalanceOwing = 0
 
 --6.    Select the Course Names whose course hours are less than 96
 SELECT  C.CourseName
