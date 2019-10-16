@@ -62,7 +62,7 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Date')
 -- Note that square brackets around identifiers is a common standard in writing SQL.
 --Database in SQL group all their contents into something called 
 --a "schema". Each database can have one or more schemas.
---The dafalt schemas name is [dbo].
+--The default schemas name is [dbo].
 --Schema names are applied to top-level objects, like tables names.
 CREATE TABLE [dbo].[Customers]
 (
@@ -102,7 +102,7 @@ CREATE TABLE [dbo].[Customers]
                                Province = 'NS' )        
                                                 NOT NULL,
     [PostalCode]            char(6)
-         CONSTRAINT CK_Csutomrs_PostalCode
+         CONSTRAINT CK_Customers_PostalCode
             CHECK (PostalCode LIKE '[A-Z][0-9][A-Z][0-9][A-Z][0-9]')                          
                                                 NOT NULL,
     [PhoneNumber]           char(13)
@@ -248,14 +248,14 @@ GO
 -- % is a wildcard for a single Character (letter , digit, or other character)
 --  [] are used to represent a range or set of characters that are allowed
 ALTER TABLE Customers
-    ADD CONSTRAINT CK_Customer_FirstName
+    ADD CONSTRAINT CK_Customers_FirstName
         CHECK (FirstName LIKE '[A-Z][A-Z]%')-- Two letters plus any other chars
         --                      \1/\1/
         --Positive match for 'Wu'
         --Negative match for 'F'
         --Negative match for '2udor'
 ALTER TABLE Customers
-    ADD CONSTRIANT CK_Customer_LastName
+    ADD CONSTRIANT CK_Customers_LastName
         CHECK (LastName LIKE '[A-Z][A-Z]%')
 
 --Once the ALTER TABLE change are made for A) AND B),
@@ -282,11 +282,11 @@ GO
 INSERT INTO Customer(FirstName, LastName)
     VALUES ('F','Flinstone')
 INSERT INTO Customer(FirstName, LastName)
-    values ('Fred', 'F')
+    VALUES ('Fred', 'F')
 
 */
 
---C) Add an extra bit of information on the  Customer table. The client eant to 
+--C) Add an extra bit of information on the  Customer table. The client want to 
 --  start tracking customer emails, so they can send out statement for outstanding payments that are due at the end of the month.
 ALTER TABLE Customers
     ADD Email varchar(30) NULL
@@ -302,8 +302,9 @@ CREATE NONCLUSTERED INDEX IX_Customers_LastName
     ON Customers (LastName)
 GO --End of a batch of instructions
 --E) Add a default constraint on the Orders. Date column to use the current date.
---GETDATE() is a global funsction in the SQL Server Database
+--GETDATE() is a global function in the SQL Server Database
 --GETDATE() will obtain the current date/time on the database  servser
+
 ALTER TABLE Orders
     ADD CONSTRAINT DF_Order_Date
         DEFAULT GETDATE() FOR [Date]
