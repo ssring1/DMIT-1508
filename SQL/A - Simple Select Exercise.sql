@@ -83,6 +83,9 @@ SELECT  S.FirstName, S.lastName
 FROM    Student AS S
 WHERE   S.BalanceOwing = 0
 
+--sp_help Student
+
+
 --6.    Select the Course Names whose course hours are less than 96
 SELECT  C.CourseName
 FROM    Course C -- I can have an alias to the table name
@@ -95,6 +98,7 @@ FROM    Staff AS ST -- The use of the AS keyword in producing table/column alias
 SELECT  Staff.LastName, Staff.FirstName, Staff.DateHired
 FROM    Staff
 WHERE   Staff.DateReleased IS NOT NULL
+
 -- NOTE: You can't mix the use of a table alias with the full name of the table
 
 -- 7.   Select the studentID's, CourseID and mark where the Mark is between 70 and 80
