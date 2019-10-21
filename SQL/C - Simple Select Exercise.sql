@@ -40,6 +40,10 @@ ORDER BY COUNT(PaymentTypeID) DESC
 
 -- 3. Select the average Mark for each studentID. Display the StudentId and their average mark
 -- TODO: Student Answer Here....
+SELECT StudentID,
+       AVG(Mark) AS 'Avg Mark'
+FROM Registration
+GROUP BY StudentID
 
 -- 4. Select the same data as question 3 but only show the studentID's and averages that are > 80
 SELECT StudentID,
@@ -50,11 +54,11 @@ GROUP BY StudentID
 HAVING AVG(Mark) > 80
 
 -- 5. How many students are from each city? Display the City and the count.
-SELECT  City,
-        COUNT(StudentID) AS 'Student Count'
+SELECT  City
+--        , COUNT(StudentID) AS 'Student Count'
 FROM    Student
 GROUP BY City
-
+HAVING COUNT(StudentID) >=2
 -- 6. Which cities have 2 or more students from them? (HINT, remember that fields that we use in the where or having do not need to be selected.....)
 SELECT  City
 --        , COUNT(StudentID) AS 'Student Count'
@@ -73,10 +77,9 @@ GROUP BY PaymentTypeID
 
 -- 8. How many students are there in each club? Show the clubID and the count
 -- TODO: Student Answer Here....
-
+SELECT
 -- Check your answer by manually grouping students by their club membership and counting them
-SELECT  ClubId, StudentID
-FROM    Activity
+
 
 -- 9. Which clubs have 3 or more students in them?
 -- TODO: Student Answer Here....
