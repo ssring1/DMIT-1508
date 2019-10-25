@@ -9,6 +9,12 @@ FROM    Staff S
     INNER JOIN Position P ON P.PositionID = S.PositionID
 GROUP BY PositionDescription 
  
+-- Out of curiocity , what are all the position names?
+SELECT PositionDescription FROM Position --There are 7 positions
+--but I only see 6 positions in the answer to Q1. That is because
+--I'M using the INNER JOIN
+
+
 --2. Select the average mark for each course. Display the CourseName and the average mark. Sort the results by average in descending order.
 SELECT  CourseName, AVG(Mark) AS 'Average Mark'
 FROM    Registration R
@@ -18,6 +24,10 @@ ORDER BY 'Average Mark' DESC
 
 --3. How many payments where made for each payment type. Display the PaymentTypeDescription and the count.
  -- TODO: Student Answer Here... 
+SELECT PaymentTypeDescription, COUNT(P.PaymentTypeID) AS 'Number of payment'
+FROM    PaymentType AS PT
+    INNER JOIN Payment AS P ON PT.PaymentTypeID = P.PaymentTypeID
+GROUP BY PT.PaymentTypeDescription
 
  
 --4. Select the average Mark for each student. Display the Student Name and their average mark. Use table aliases in your FROM & JOIN clause.
