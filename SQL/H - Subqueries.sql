@@ -6,6 +6,7 @@ GO
 
 --1. Select the Payment dates and payment amount for all payments that were Cash
 SELECT PaymentDate, Amount
+         --, Payment.PaymentTypeID
 FROM   Payment
 WHERE  PaymentTypeID = -- Using the = means that the RH side must be a single value
      -- Assuming that every PaymentTypeDescription will be UNIQUE,
