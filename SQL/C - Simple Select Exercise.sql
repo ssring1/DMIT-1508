@@ -77,20 +77,73 @@ GROUP BY PaymentTypeID
 
 -- 8. How many students are there in each club? Show the clubID and the count
 -- TODO: Student Answer Here....
-SELECT
+SELECT      ClubId, COUNT(StudentId) AS 'Student Count'
+FROM        Activity
+GROUP BY    ClubId
+
+-- Check your answer by manually grouping students by their club membership and counting them
+SELECT  ClubId, StudentID
+FROM    Activity
+
 -- Check your answer by manually grouping students by their club membership and counting them
 
 
 -- 9. Which clubs have 3 or more students in them?
 -- TODO: Student Answer Here....
+SELECT      ClubId, COUNT(StudentId) AS 'Student Count'
+FROM        Activity
+GROUP BY    ClubId
+HAVING      COUNT(StudentId) >= 3
 
 
 --10. Grouping the courses by the number of hours in each course, what is the average cost of those courses? Display the course hours and the average cost.
+SELECT		CourseHours AS 'Hours', AVG(CourseCost) AS 'Average'
+FROM		Course
+GROUP BY	CourseHours
 
 --11. Which teachers are getting the best results from the courses they teach? Display the staff ID and the average course mark, sorted by the course mark from highest to lowest.
+SELECT		StaffID AS 'Instructor ID', AVG(Mark) AS 'Average Mark'
+FROM		Registration
+GROUP BY	StaffId
+ORDER BY	AVG(Mark) DESC
 
 --12. How many male and female students do we have?
+SELECT		COUNT(StudentID) AS 'Male'
+FROM		Student
+GROUP BY	Gender
+HAVING		Gender = 'M'
 
+SELECT		COUNT(StudentID) AS 'Female'
+FROM		Student
+GROUP BY	Gender
+HAVING		Gender = 'F'
+
+-- OR
+SELECT		Gender, COUNT(StudentId) AS 'Student Count'
+FROM		Student
+GROUP BY	Gender
+
+--I have googled and used CASE
+SELECT	COUNT(StudentId) AS 'Total Students',
+		COUNT(CASE WHEN Gender = 'M' THEN 1 END) AS Male,
+		COUNT(CASE WHEN Gender = 'F' THEN 1 END) AS Female
+FROM	Student
 --13. Show the average balance owing for male and female students.
+SELECT		AVG(BalanceOwing) AS 'Male Student Balance Owing'
+FROM		Student
+GROUP BY	Gender
+HAVING		Gender = 'M'
 
+SELECT		AVG(BalanceOwing) AS 'Female Student Balance Owing'
+FROM		Student
+GROUP BY	Gender
+HAVING		Gender = 'F'
+
+--OR
+SELECT		Gender, AVG(BalanceOwing) AS 'Average Balance Owing'
+FROM		Student
+GROUP BY	Gender
 --14. How many students participate in school clubs? Display the club id and the number of students. (Hint: You should be using the Activity table for this question.)
+SELECT		ClubId AS 'Club', COUNT(StudentId) AS 'Total Student Members'
+FROM		Activity
+GROUP BY	ClubId
