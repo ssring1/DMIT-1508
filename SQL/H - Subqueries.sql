@@ -135,14 +135,28 @@ WHERE City = 'Edm'
 SELECT AVG(Mark)FROM Registration GROUP BY StudentID
 --list the students whose average is as loarge as the largest average.
 SELECT  FirstName + ' ' + LastName AS 'StudentName'
-        --AVG(Mark) AS 'AverageMark'
+        ,AVG(Mark) AS 'AverageMark'
 FROM Student AS S
     INNER JOIN Registration AS R
     ON S.StudentID = R.StudentID
 GROUP BY FirstName, LastName
 HAVING  AVG(Mark) >= ALL
-                    (SELECT AVG(Mark) FROM Registration GROUP BY StudentID)
+                    (SELECT AVG(Mark) FROM Registration WHERE Mark IS NOT NULL GROUP BY StudentID)
 
 --11.Which student(s) allow the largest classes? show the course id, name, and max class size.
 
 --12.Which course(s) are the most affortable? show the course name and cost.
+
+--13.Which staff have taught the largest classes?( Be sure to group registrations by course and semester)
+
+--14. Which students are most active in the clubs?
+--Subquery portion - counts of when grouping by student
+SELECT COUNT(ClubID) FROM Activity GROUP BY StudentID
+--Main query
+SELECT  FirstName, LastName
+FROM Student AS S
+    INNER JOIN Activity AS A
+    ON S.StudentID = A.StudentID
+GROUP BY Firstname, lastName
+HAVING COUNT(ClubID) >= all
+    (select count(ClubID) FROM Activity GROUP BY StudentID)
