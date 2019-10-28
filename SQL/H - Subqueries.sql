@@ -74,6 +74,7 @@ FROM   Staff
         ON Staff.StaffID = Registration.StaffID
 WHERE Registration.StaffID IS NULL
 
+
 --6. Select the Payment TypeID(s) that have the highest number of Payments made.
 -- Explore the counts of payment types, before we try the subquery
 SELECT  PaymentTypeID, COUNT(PaymentTypeID) AS 'How many times'
@@ -129,3 +130,19 @@ WHERE City = 'Edm'
 --9. What is the avg mark for each of the students from Edm? Display their StudentID and avg(mark)
 -- TODO: Student Answer Here...
 
+--10.Which student (s) have the highest average mark?Hint- this can only be done by a subquery.
+--List the average marks of the students...
+SELECT AVG(Mark)FROM Registration GROUP BY StudentID
+--list the students whose average is as loarge as the largest average.
+SELECT  FirstName + ' ' + LastName AS 'StudentName'
+        --AVG(Mark) AS 'AverageMark'
+FROM Student AS S
+    INNER JOIN Registration AS R
+    ON S.StudentID = R.StudentID
+GROUP BY FirstName, LastName
+HAVING  AVG(Mark) >= ALL
+                    (SELECT AVG(Mark) FROM Registration GROUP BY StudentID)
+
+--11.Which student(s) allow the largest classes? show the course id, name, and max class size.
+
+--12.Which course(s) are the most affortable? show the course name and cost.
