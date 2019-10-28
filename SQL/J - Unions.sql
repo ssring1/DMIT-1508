@@ -65,3 +65,10 @@ GO
 --    UNION that with a list of the course IDs and the MaxStudents of the course.
 --    The columns should be 'Course', 'Count', and 'Type', with the type for the
 --    first list being 'Actual-' + Semester and the type for the second list being 'Planned'.
+IF OBJECT_ID('CourseID', 'V') IS NOT NULL
+    DROP VIEW CourseID
+GO
+CREATE VIEW CourseID
+AS
+    --Get all the students
+    SELECT  FirstName + ' ' + LastName AS 'FullName',
