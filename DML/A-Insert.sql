@@ -42,6 +42,16 @@ VALUES ('Shane', 'Bell', GETDATE(),
         (SELECT PositionID
         FROM   Position
         WHERE  PositionDescription = 'Instructor'))
+--2.c. We have an open position in the staff
+SELECT  PositionDescription 
+FROM    Position
+WHERE   PositionID NOT IN (SELECT PositionID FROM Staff)
+--      Add Sheldon Murray as the new Assistant Dean. (He has friends at NAIT)
+INSERT INTO Staff(FirstName, LastName, DateHired, PositionID)
+VALUES ('Sheldon', 'Murray', GETDATE(), 
+        (SELECT PositionID
+        FROM   Position
+        WHERE  PositionDescription = 'Assistant Dean'))
 
 -- 3. There are three additional clubs being started at the school:
 --      - START - Small Tech And Research Teams
