@@ -67,6 +67,12 @@ VALUES ('START', 'Small Tech And Research Teams'),
 -- 4. In your web browser, use https://randomuser.me/ to get information on three
 --    people to add as new students. Write separate insert statement for each new student.
 -- TODO: Student Answer Here....
+INSERT INTO Student(Gender, LastName, FirstName, Birthdate)
+VALUES ('M','Franklin','Jimmy','2001-09-01'),
+       ('M','Williamson','Irene','1998-1-12'),
+       ('F','Cunningham','Allan','2002-10-5')
+
+
 
 
 -- 5. Enroll each of the students you've added into the DMIT104 course.
