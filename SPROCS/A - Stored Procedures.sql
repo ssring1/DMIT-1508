@@ -169,10 +169,54 @@ INSERT INTO Course(CourseId, CourseName, CourseHours, CourseCost, MaxStudents)
 VALUES ('DMIT987', 'Advanced Logic', 90, 420.00, 12)
 
 --6. Create a stored procedure called "Provinces" to list all the students provinces.
-
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'Provinces')
+    DROP PROCEDURE Provinces
+GO
+CREATE PROCEDURE Provinces
+    -- Parameters here
+AS
+    -- Body of procedure here
+    SELECT DISTINCT Province FROM Student
+RETURN
+GO
 --7. OK, question 6 was ridiculously simple and serves no purpose. Lets remove that stored procedure from the database.
-
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'SprocName')
+    DROP PROCEDURE SprocName
+GO
+CREATE PROCEDURE SprocName
+    -- Parameters here
+AS
+    -- Body of procedure here
+RETURN
+GO
 --8. Create a stored procedure called StudentPaymentTypes that lists all the student names and their payment types. Ensure all the student names are listed, including those who have not yet made a payment.
-
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'StudentPaymentType')
+    DROP PROCEDURE StudentPaymentType
+GO
+CREATE PROCEDURE StudentPaymentType
+    -- Parameters here
+AS
+    -- Body of procedure here
+    SELECT FirstName, LastName
+    FROM Student AS S
+        LEFT OUTTER JOIN Payment P ON S.StudentID = P.StudentID
+        LEFT OUTTER JOIN Payment PT ON P.PaymentTypeID= PT.PaymentTypeID
+RETURN
+GO
 --9. Modify the procedure from question 8 to return only the student names that have made payments.
-
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'StudentPaymentType')
+    DROP PROCEDURE StudentPaymentType
+GO
+CREATE PROCEDURE StudentPaymentType
+    -- Parameters here
+AS
+    -- Body of procedure here
+    SELECT FirstName, LastName
+    FROM Student AS S
+        INNER JOIN Payment P ON S.StudentID = P.StudentID
+        INNER JOIN Payment PT ON P.PaymentTypeID= PT.PaymentTypeID
+RETURN
+GO
+    -- Body of procedure here
+RETURN
+GO
