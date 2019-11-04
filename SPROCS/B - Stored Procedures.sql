@@ -35,6 +35,11 @@ AS
 RETURN
 GO
 
+AddClub 'ABC', 'After Bachaloriate Club'
+GO
+AddClub ABD, Another_fun_day
+GO
+
 
 -- 1.b. Modify the AddClub procedure to ensure that the club name and id are actually supplied. Use the RAISERROR() function to report that this data is required.
 ALTER PROCEDURE AddClub
@@ -53,6 +58,9 @@ AS
         VALUES (@ClubId, @ClubName)
     END
 RETURN
+GO
+
+AddClub null, null
 GO
 
 -- 2. Make a stored procedure that will find a club based on the first two or more characters of the club's ID. Call the procedure "FindStudentClubs"
